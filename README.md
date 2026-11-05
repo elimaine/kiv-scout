@@ -6,24 +6,6 @@ Kiv Scout is a local-first codebase index and MCP context server for quickly nav
 
 It indexes source files into a local SQLite database, extracts symbols and imports, then returns ranked file pointers, compact skeletons, or bounded context capsules for a query. It is designed for coding agents and developers who need a cheap first pass over a large repo before opening specific files.
 
-## Where this stands (November 2026)
-
-Stale since August 2026 and not maintained. It works as it stands for
-Rust, TypeScript, JavaScript and Python over a local SQLite index, and the
-pointer-first, budgeted-capsule design is the part worth borrowing. Take
-it as a starting point, or use one of these, which are maintained:
-
-- Serena, https://github.com/oraios/serena: language-server symbols,
-  references and refactors. The strongest choice for exact navigation.
-- Claude Context, https://github.com/zilliztech/claude-context, or
-  CocoIndex, https://github.com/cocoindex-io/cocoindex: embedding search
-  over AST chunks, for "where is the thing that does X".
-- A code-graph server (CodeGraph, codebase-memory-mcp) for call-graph and
-  blast-radius questions.
-- Sourcegraph's MCP server or Augment's Context Engine, if you are paying.
-
-Most people run one structural tool and one semantic one together.
-
 ## Features
 
 - Local SQLite index in `.kiv/index.db`
