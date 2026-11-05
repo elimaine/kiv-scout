@@ -334,6 +334,35 @@ lexical noise. Repositories can tune `mcp_max_tokens`, `mcp_max_files`,
 `max_tokens`, or `max_files` in `kiv-scout.toml`, and CLI callers can still pass
 explicit overrides.
 
+## Working Alongside Serena and Semble
+
+Kiv Scout is one of three pointer tools that cover different questions, and
+they are better together than any one alone.
+
+| Tool | Answers | Backed by |
+|---|---|---|
+| Kiv Scout | which files to open first, what they contain, what a change touches | lexical and symbol index, import edges, diff impact |
+| [Semble](https://github.com/MinishLab/semble) | where the code is when you know the behaviour but not the names | code-aware chunks, Model2Vec embeddings plus BM25 |
+| [Serena](https://github.com/oraios/serena) | the exact definition, signature and true references of a known symbol | language servers |
+
+A workflow that holds up in daily use:
+
+1. Start with Kiv when the task vocabulary probably matches the source, or
+   with Semble when it does not. Both return a few candidate paths, which
+   is the point: neither is a correctness oracle.
+2. Once a symbol or file is known, ask Serena for its definition and
+   references. Serena's references are symbol-semantic and precise, but
+   they are not import-level or test impact.
+3. Before editing, run `kiv-scout impact` on the symbol or on the diff.
+   Kiv's import edges and likely-test adjacency are the blast radius that
+   Serena and Semble do not report.
+4. Verify anything any of the three points at with `rg` and by reading
+   the file.
+
+Kiv is cheapest and runs first; Semble covers the vocabulary gap; Serena
+is exact once there is something exact to ask about. None of them needs
+an API key or a GPU, and all three run against a local checkout.
+
 ## Configuration
 
 Kiv Scout looks for `kiv-scout.toml` in the current directory, or a path passed with `--config`, or the `KIV_SCOUT_CONFIG` environment variable.
